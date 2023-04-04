@@ -1,3 +1,4 @@
+import { Event } from './event.entity';
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
@@ -13,6 +14,8 @@ import { TypeOrmModule } from '@nestjs/typeorm';
       username: 'root',
       password: 'example',
       database: 'nest-events',
+      entities: [Event],
+      synchronize: true,
     }),
   ],
   controllers: [AppController, EventsController],
