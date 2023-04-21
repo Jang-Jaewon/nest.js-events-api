@@ -17,6 +17,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
       entities: [Event],
       synchronize: true,
     }),
+    TypeOrmModule.forFeature([Event]),
   ],
   controllers: [AppController, EventsController],
   providers: [AppService],
