@@ -12,7 +12,7 @@ import { CreateEventDto } from '../create-event.dto';
 import { UpdateEventDto } from '../update-event.dto';
 import { Event } from '../event.entity';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Like, MoreThan, Repository } from 'typeorm';
 
 @Controller('/events')
 export class EventsController {
@@ -26,10 +26,10 @@ export class EventsController {
     return await this.repository.find();
   }
 
-  @Get(':id')
-  async findOne(@Param('id') id) {
-    return await this.repository.findOne(id);
-  }
+  // @Get(':id')
+  // async findOne(@Param('id') id) {
+  //   return await this.repository.find(id);
+  // }
 
   @Post()
   async create(@Body() input: CreateEventDto) {
@@ -50,10 +50,30 @@ export class EventsController {
     });
   }
 
-  @Delete(':id')
-  @HttpCode(204)
-  async remove(@Param('id') id) {
-    const event = await this.repository.findOne(id);
-    await this.repository.remove(event);
+  // @Delete(':id')
+  // @HttpCode(204)
+  // async remove(@Param('id') id) {
+  //   const event = await this.repository.findOneBy({ id });
+  //   await this.repository.remove(event);
+  // }
+
+  @Get('/practice')
+  async practice() {
+    return await this.repository.find({
+      select: ['id', 'when'],
+      where: [
+        {
+          id: MoreThan(3),
+          when: MoreThan(new Date('2021-02-12T13:00:00')),
+        },
+        {
+          description: Like('%meet%'),
+        },
+      ],
+      take: 2,
+      order: {
+        id: 'DESC',
+      },
+    });
   }
 }
